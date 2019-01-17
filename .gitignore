@@ -1,0 +1,10 @@
+/.idea
+/.svn
+config.py
+/data/patron_reports/*.txt
+/data/result_reports/*.txt
+/data/log/*.log
+/data/xml/*.xml
+/data/lastpatronreport
+/data/run1
+/data/run2
