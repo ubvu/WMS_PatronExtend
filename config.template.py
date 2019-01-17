@@ -28,8 +28,8 @@ PATRON_REPORT_DATE_FORMAT = '%Y-%m-%d %H:%M:%S'
 
 CATEGORY_RULES = {
     'VU Employee': {
-        'expires_in': 2,  # 1 <= expiration date month number - today month number <= X
-        'last_activity': 6,  # today month - last activity date month <= X
+        'expires_in': 2,  # 1 <= expiration date - today <= X months
+        'last_activity': 6,  # today - last activity date <= X months
         'expire_add': 12  # add X months to the existing expiration date)
     },
     'VUmc Employee': {
