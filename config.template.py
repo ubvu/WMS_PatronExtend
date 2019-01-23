@@ -26,6 +26,7 @@ PATRON_XML_NAME = 'patron_extensions-%s.xml'  # % <'%Y%m%d'>
 PATRON_XML_DATE_FORMAT = '%Y-%m-%dT%H:%M:%S'
 PATRON_REPORT_DATE_FORMAT = '%Y-%m-%d %H:%M:%S'
 
+SMTP_HOST = '<mail server>'
 MAIL_FROM = '<email-address>'
 MAIL_BCC = '<email-address>'
 MAIL_TO = '<email-address>'
