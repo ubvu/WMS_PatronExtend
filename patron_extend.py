@@ -247,7 +247,7 @@ def send_mail(logfile, subject, attachments=[]):
         message.attach(part)
 
     try:
-        s = smtplib.SMTP('smtp.vu.nl')
+        s = smtplib.SMTP(SMTP_HOST)
         s.send_message(message)
         s.quit()
         logger.info("successfully sent email")
