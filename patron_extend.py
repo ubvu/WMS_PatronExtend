@@ -10,6 +10,7 @@ import paramiko
 import base64
 import csv
 from config import *
+from rules import CATEGORY_RULES
 import re
 from datetime import datetime
 from dateutil.relativedelta import relativedelta

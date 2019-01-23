@@ -26,29 +26,6 @@ PATRON_XML_NAME = 'patron_extensions-%s.xml'  # % <'%Y%m%d'>
 PATRON_XML_DATE_FORMAT = '%Y-%m-%dT%H:%M:%S'
 PATRON_REPORT_DATE_FORMAT = '%Y-%m-%d %H:%M:%S'
 
-CATEGORY_RULES = {
-    'VU Employee': {
-        'expires_in': 2,  # 1 <= expiration date - today <= X months
-        'last_activity': 6,  # today - last activity date <= X months
-        'expire_add': 12  # add X months to the existing expiration date)
-    },
-    'VUmc Employee': {
-        'expires_in': 2,
-        'last_activity': 6,
-        'expire_add': 12
-    },
-    'VU Student': {
-        'expires_in': 2,
-        'last_activity': 6,
-        'expire_add': 12
-    },
-    'ILL': {
-        'expires_in': 3,
-        'last_activity': 6,
-        'expire_add': 12
-    }
-}
-
 MAIL_FROM = '<email-address>'
 MAIL_BCC = '<email-address>'
 MAIL_TO = '<email-address>'
