@@ -71,7 +71,7 @@ class SftpDocklands():
         self._close()
 
     def _dir(self, path):
-        logger.info('attempting retrieve directory listing of %s' % (path))
+        logger.info('attempting retrieve directory listing of %s on %s' % (path, SFTP_HOST))
         self._connect()
         dir = self.connection.listdir(path)
         self._close()

@@ -3,6 +3,7 @@ import os
 SFTP_HOST = '<oclc sftp host>'
 SFTP_USER = '<user>'
 SFTP_PASSWORD = '******'
+# To get the key run: ssh-keyscan <oclcsftpserver>
 SFTP_KEY = b"""1234567890"""
 
 ROOT_PATH = '/xfer/wms/'
