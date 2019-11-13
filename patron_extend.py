@@ -53,7 +53,7 @@ class SftpDocklands():
         self.connection.close()
 
     def _connect(self):
-        logger.debug('open connection to %s' % (self.host))
+        logger.info('open connection to %s' % (self.host))
         self.connection = pysftp.Connection(self.host, username=self.user, password=self.password, cnopts=self.cnopts)
 
     def _download(self, path, filename, local_path):
@@ -71,7 +71,7 @@ class SftpDocklands():
         self._close()
 
     def _dir(self, path):
-        logger.info('attempting retrieve directory listing of %s on %s' % (path, SFTP_HOST))
+        logger.info('attempting retrieve directory listing of %s' % (path))
         self._connect()
         dir = self.connection.listdir(path)
         self._close()
