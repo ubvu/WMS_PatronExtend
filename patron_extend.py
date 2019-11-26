@@ -158,7 +158,7 @@ class Patron():
 class PatronReportParser():
     def __init__(self):
         self.patron_list = []
-        self.header = 'Inst_Symbol|Patron_Given_Name|Patron_Family_Name|Patron_Gender|Patron_Date_of_Birth|Patron_Barcode|Patron_Borrower_Category|Patron_Home_Branch_ID|Patron_Street_Address1|Patron_Street_Address2|Patron_City_or_Locality|Patron_State_or_Province|Patron_Postal_Code|Patron_Phone_Number|Patron_Email_Address|Patron_Verified_Flag|Patron_Total_Fines|Patron_Created_Date|Patron_Source_System|Patron_Expiration_Date|Patron_User_ID_At_Source|Patron_Blocked_Flag|Patron_Username|Patron_Last_Activity_Date|Patron_Last_Modified_Date'
+        self.header = 'Inst_Symbol|Patron_Given_Name|Patron_Family_Name|Patron_Gender|Patron_Date_of_Birth|Patron_Barcode|Patron_Borrower_Category|Patron_Home_Branch_ID|Patron_Street_Address1|Patron_Street_Address2|Patron_City_or_Locality|Patron_State_or_Province|Patron_Postal_Code|Patron_Phone_Number|Patron_Email_Address|Patron_Verified_Flag|Patron_Total_Fines|Patron_Created_Date|Patron_Source_System|Patron_Expiration_Date|Patron_User_ID_At_Source|Patron_Blocked_Flag|Patron_Username|Patron_Last_Activity_Date|Patron_Last_Modified_Date|Patron_Custom_Category_1|Patron_Custom_Category_2|Patron_Custom_Category_3|Patron_Custom_Category_4|Patron_Country|Patron_Public_Notes|Patron_Staff_Notes'
 
     def parse_report(self, report):
         file = '%s%s' % (PATRON_REPORT_LPATH, report)
@@ -181,6 +181,7 @@ class PatronReportParser():
                 patron.last_activity = datetime.strptime(line[lol[0].index('Patron_Last_Activity_Date')],
                                                          PATRON_REPORT_DATE_FORMAT)
                 self.patron_list.append(patron)
+        return True
 
 
 class PatronXml():
@@ -302,48 +303,51 @@ def run1(testfile='', do_upload=True, force=False):
             f.write(s.latest_patron_report)
 
         p = PatronReportParser()
-        p.parse_report(s.latest_patron_report)
-
-        logger.info('%s patrons in report file %s' % (len(p.patron_list), s.latest_patron_report))
-
-        patrons_to_extend = []
-        for patron in p.patron_list:
-            # if patron.expiration_date < patron.last_activity:  print(patron.barcode, patron.category, patron.expiration_date, patron.last_activity)
-            d1 = patron.expiration_date.strftime(PATRON_XML_DATE_FORMAT)
-            if patron.extended():
-                logger.info('%s|%s|%s|%s' % (
-                    patron.barcode, patron.category, patron.expiration_date.strftime(PATRON_XML_DATE_FORMAT),
-                    patron.last_activity.strftime(PATRON_XML_DATE_FORMAT)))
-                patrons_to_extend.append(patron)
-
-        logger.info('found %s patrons to update' % len(patrons_to_extend))
-        if len(patrons_to_extend) > 1000:
-            logger.error('more than 1000 patrons to extend, suspect something is wrong')
+        res = p.parse_report(s.latest_patron_report)
+        if not res:
+            logger.error('patron report could not be parsed, columns have changed?')
             handle_exception()
-        if len(patrons_to_extend) > 0:
-            x = PatronXml()
-            x.patron_list = patrons_to_extend
-            xml_filename = PATRON_XML_NAME % today_str
-            try:
-                with open('%s%s' % (XML_LPATH, xml_filename), 'wb') as f:
-                    f.write(x.create())
-            except Exception as e:
-                logger.error('could not write xml: %s' % e)
+        else:
+            logger.info('%s patrons in report file %s' % (len(p.patron_list), s.latest_patron_report))
+
+            patrons_to_extend = []
+            for patron in p.patron_list:
+                # if patron.expiration_date < patron.last_activity:  print(patron.barcode, patron.category, patron.expiration_date, patron.last_activity)
+                d1 = patron.expiration_date.strftime(PATRON_XML_DATE_FORMAT)
+                if patron.extended():
+                    logger.info('%s|%s|%s|%s' % (
+                        patron.barcode, patron.category, patron.expiration_date.strftime(PATRON_XML_DATE_FORMAT),
+                        patron.last_activity.strftime(PATRON_XML_DATE_FORMAT)))
+                    patrons_to_extend.append(patron)
+
+            logger.info('found %s patrons to update' % len(patrons_to_extend))
+            if len(patrons_to_extend) > 1000:
+                logger.error('more than 1000 patrons to extend, suspect something is wrong')
                 handle_exception()
-
-            if do_upload:
-                logger.info('upload xml file %s' % (xml_filename))
+            if len(patrons_to_extend) > 0:
+                x = PatronXml()
+                x.patron_list = patrons_to_extend
+                xml_filename = PATRON_XML_NAME % today_str
                 try:
-                    s.upload_patron_xml(xml_filename)
-                    store_last_processed(s.latest_patron_report)
+                    with open('%s%s' % (XML_LPATH, xml_filename), 'wb') as f:
+                        f.write(x.create())
                 except Exception as e:
-                    logger.error('could not upload xml file:' + str(e))
+                    logger.error('could not write xml: %s' % e)
                     handle_exception()
-            else:
-                logger.info('TEST mode: skipping upload')
-            changed = True
 
-        return changed
+                if do_upload:
+                    logger.info('upload xml file %s' % (xml_filename))
+                    try:
+                        s.upload_patron_xml(xml_filename)
+                        store_last_processed(s.latest_patron_report)
+                    except Exception as e:
+                        logger.error('could not upload xml file:' + str(e))
+                        handle_exception()
+                else:
+                    logger.info('TEST mode: skipping upload')
+                changed = True
+
+            return changed
 
 
 def run2():
