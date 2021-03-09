@@ -385,7 +385,7 @@ def run2():
                       attachments=['%s%s' % (XML_LPATH, PATRON_XML_NAME % today_str)])
 
 
-logger.info('Starting script %s on server %s.ubvu.vu.nl' % (os.path.realpath(__file__), socket.gethostname()))
+logger.info('Starting script %s on server %s' % (os.path.realpath(__file__), socket.gethostname()))
 checkfile1 = '%s%s' % (LOCAL_PATH, 'run1')
 checkfile2 = '%s%s' % (LOCAL_PATH, 'run2')
 if os.path.isfile(checkfile2):
