@@ -5,9 +5,9 @@ import re
 from datetime import datetime
 import logging
 import os
-from config import SFTP_HOST, SFTP_USER, SFTP_PASSWORD, SFTP_KEY, ROOT_PATH, REPORTS_PATH, PATRON_REPORT_PATTERN, \
+from resources.config import SFTP_HOST, SFTP_USER, SFTP_PASSWORD, SFTP_KEY, ROOT_PATH, REPORTS_PATH, PATRON_REPORT_PATTERN, \
     PATRON_REPORT_LPATH, RESULT_REPORT_PATTERN, EXCEPTION_REPORT_PATTERN, RESULT_LPATH, IN_PATH, XML_LPATH
-from tools import diff_month
+from resources.tools import diff_month
 
 today = datetime.now()
 logger = logging.getLogger('patron_extend')

@@ -4,7 +4,8 @@ from email.mime.base import MIMEBase
 from email import encoders
 import smtplib
 import logging
-from config import MAIL_FROM, MAIL_TO, MAIL_BCC, SMTP_HOST
+import os
+from resources.config import MAIL_FROM, MAIL_TO, MAIL_BCC, SMTP_HOST
 
 logger = logging.getLogger('patron_extend')
 def diff_month(d1, d2):
@@ -33,7 +34,7 @@ def send_mail(logfile, subject, attachments=[]):
 
     try:
         s = smtplib.SMTP(SMTP_HOST)
-        #s.send_message(message)
+        s.send_message(message)
         s.quit()
         logger.info("successfully sent email")
     except Exception as e:

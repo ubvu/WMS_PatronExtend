@@ -1,10 +1,10 @@
 import csv
-from config import PATRON_REPORT_LPATH, PATRON_REPORT_DATE_FORMAT, PATRON_XML_DATE_FORMAT
-from rules import CATEGORY_RULES
+from resources.config import PATRON_REPORT_LPATH, PATRON_REPORT_DATE_FORMAT, PATRON_XML_DATE_FORMAT
+from resources.rules import CATEGORY_RULES
 from datetime import datetime
 from dateutil.relativedelta import relativedelta
 from lxml import etree as ET
-from tools import diff_month
+from resources.tools import diff_month
 
 
 class Patron():

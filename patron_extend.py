@@ -67,8 +67,9 @@ def get_patron_report(testfile, force):
         handle_exception()
     return False
 
+
 def upload_xml_file(xml_filename):
-    s=SftpDocklands()
+    s = SftpDocklands()
     logger.info('upload xml file %s' % (xml_filename))
     try:
         s.upload_patron_xml(xml_filename)
@@ -76,10 +77,11 @@ def upload_xml_file(xml_filename):
         logger.error('could not upload xml file:' + str(e))
         handle_exception()
 
+
 def process_patron_report(testfile='', do_upload=True, force=False):
     changed = False
 
-    latest_patron_report=get_patron_report(testfile, force)
+    latest_patron_report = get_patron_report(testfile, force)
     if latest_patron_report:
         store_last_processed(latest_patron_report)
         p = PatronReportParser()
@@ -139,29 +141,29 @@ def get_reports():
 
 
 logger.info('Starting script %s on server %s' % (os.path.realpath(__file__), socket.gethostname()))
-changed = process_patron_report(do_upload=True)
+changed = process_patron_report(do_upload=False)
 if changed:
-    counter=1
-    report_fetched=False
-    while not report_fetched and counter<=5:
-        time.sleep(30*60)
-        #time.sleep(10)
-        result_report, exception_report=get_reports()
+    counter = 1
+    report_fetched = False
+    while not report_fetched and counter <= 5:
+        #time.sleep(30 * 60)
+        time.sleep(10)
+        result_report, exception_report = get_reports()
         if exception_report:
-            report_fetched=True
+            report_fetched = True
             with open('%s%s' % (RESULT_LPATH, exception_report), 'r') as myfile:
                 data = myfile.read()
                 logger.warning('exception report:\n%s' % data)
                 send_mail(LOGFILE, 'ATTENTION: WMS Patron Extension script finished with exceptions',
                           attachments=['%s%s' % (XML_LPATH, PATRON_XML_NAME % today_str),
-                                       '%s%s' % (RESULT_LPATH, exception_report), '%s%s' % (RESULT_LPATH, result_report)])
+                                       '%s%s' % (RESULT_LPATH, exception_report),
+                                       '%s%s' % (RESULT_LPATH, result_report)])
         else:
             if result_report:
-                report_fetched=True
+                report_fetched = True
                 send_mail(LOGFILE, 'SUCCESS: WMS Patron Extension script finished with changes',
                           attachments=['%s%s' % (XML_LPATH, PATRON_XML_NAME % today_str),
                                        '%s%s' % (RESULT_LPATH, result_report)])
-        counter=counter+1
+        counter = counter + 1
 else:
     send_mail(LOGFILE, 'SUCCESS: WMS Patron Extension script finished with no changes')
-
