@@ -1,6 +1,6 @@
 /.idea
 /.svn
-config.py
+resources/config.py
 /data/patron_reports/*.txt
 /data/result_reports/*.txt
 /data/log/*.log

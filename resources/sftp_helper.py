@@ -1,15 +1,16 @@
 import pysftp
 import paramiko
 import base64
-from config import *
 import re
 from datetime import datetime
 import logging
+import os
+from config import SFTP_HOST, SFTP_USER, SFTP_PASSWORD, SFTP_KEY, ROOT_PATH, REPORTS_PATH, PATRON_REPORT_PATTERN, \
+    PATRON_REPORT_LPATH, RESULT_REPORT_PATTERN, EXCEPTION_REPORT_PATTERN, RESULT_LPATH, IN_PATH, XML_LPATH
+from tools import diff_month
 
 today = datetime.now()
 logger = logging.getLogger('patron_extend')
-def diff_month(d1, d2):
-    return (d1.year - d2.year) * 12 + d1.month - d2.month
 
 class SftpDocklands():
     def __init__(self):
@@ -81,7 +82,6 @@ class SftpDocklands():
             m = p.match(f)
             pe = re.compile(EXCEPTION_REPORT_PATTERN % (os.path.splitext(xml_file)[0], today.strftime('%Y-%m-%d')))
             me = pe.match(f)
-            print(me, f)
             if m:
                 self.result_report = self._download('%s%s' % (ROOT_PATH, REPORTS_PATH), f, RESULT_LPATH)
             if me:

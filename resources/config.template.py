@@ -12,7 +12,7 @@ IN_PATH = 'in/patron/'
 OUT_PATH = 'out/'
 
 dirname = os.path.dirname(__file__)
-LOCAL_PATH = os.path.join(dirname, 'data/')
+LOCAL_PATH = os.path.join(dirname, '../data/')
 LOG_LPATH = '%s%s' % (LOCAL_PATH, 'log/')
 PATRON_REPORT_LPATH = '%s%s' % (LOCAL_PATH, 'patron_reports/')
 PATRON_REPORT_ARCHIVE_LPATH = '%s%s' % (PATRON_REPORT_LPATH, 'archive/')

@@ -1,13 +1,11 @@
 import csv
-from config import *
+from config import PATRON_REPORT_LPATH, PATRON_REPORT_DATE_FORMAT, PATRON_XML_DATE_FORMAT
 from rules import CATEGORY_RULES
 from datetime import datetime
 from dateutil.relativedelta import relativedelta
 from lxml import etree as ET
+from tools import diff_month
 
-
-def diff_month(d1, d2):
-    return (d1.year - d2.year) * 12 + d1.month - d2.month
 
 class Patron():
     def __init__(self):

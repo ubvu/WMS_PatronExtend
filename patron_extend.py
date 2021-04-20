@@ -1,16 +1,12 @@
 import time
-from email.mime.text import MIMEText
-from email.mime.multipart import MIMEMultipart
-from email.mime.base import MIMEBase
-from email import encoders
 import socket
-import smtplib
-from config import *
-from patron_helpers import PatronReportParser, PatronXml
+import os
+from resources.config import LOG_LPATH, LOCAL_PATH, PATRON_XML_DATE_FORMAT, PATRON_XML_NAME, XML_LPATH, RESULT_LPATH
+from resources.patron_helpers import PatronReportParser, PatronXml
 from datetime import datetime
 import logging
-
-from sftp_helper import SftpDocklands
+from resources.sftp_helper import SftpDocklands
+from resources.tools import send_mail
 
 today = datetime.now()
 today_str = today.strftime('%Y%m%d')
@@ -27,36 +23,6 @@ logger.setLevel(logging.INFO)
 def handle_exception():
     send_mail(LOGFILE, 'ERROR: WMS Patron Extension script encountered an error!')
     raise SystemExit(0)
-
-
-def send_mail(logfile, subject, attachments=[]):
-    SUBJECT = subject
-
-    message = MIMEMultipart()
-    with open(logfile) as fp:
-        # Create a text/plain message
-        message.attach(MIMEText(fp.read()))
-    message['From'] = MAIL_FROM
-    message['To'] = MAIL_TO
-    message['Bcc'] = MAIL_BCC
-    message['Subject'] = SUBJECT
-
-    for path in attachments:
-        part = MIMEBase('application', "octet-stream")
-        with open(path, 'rb') as file:
-            part.set_payload(file.read())
-        encoders.encode_base64(part)
-        part.add_header('Content-Disposition',
-                        'attachment; filename="{}"'.format(os.path.basename(path)))
-        message.attach(part)
-
-    try:
-        s = smtplib.SMTP(SMTP_HOST)
-        #s.send_message(message)
-        s.quit()
-        logger.info("successfully sent email")
-    except Exception as e:
-        logger.error("unable to send email %s" % e)
 
 
 def housekeeping(days):
@@ -173,13 +139,13 @@ def get_reports():
 
 
 logger.info('Starting script %s on server %s' % (os.path.realpath(__file__), socket.gethostname()))
-changed = process_patron_report(do_upload=False)
+changed = process_patron_report(do_upload=True)
 if changed:
     counter=1
     report_fetched=False
     while not report_fetched and counter<=5:
-        #time.sleep(30*60)
-        time.sleep(10)
+        time.sleep(30*60)
+        #time.sleep(10)
         result_report, exception_report=get_reports()
         if exception_report:
             report_fetched=True
