@@ -141,13 +141,13 @@ def get_reports():
 
 
 logger.info('Starting script %s on server %s' % (os.path.realpath(__file__), socket.gethostname()))
-changed = process_patron_report(do_upload=False)
+changed = process_patron_report(do_upload=True)
 if changed:
     counter = 1
     report_fetched = False
     while not report_fetched and counter <= 5:
-        #time.sleep(30 * 60)
-        time.sleep(10)
+        time.sleep(30 * 60)
+        logger.info('retrieve report try #%s' % counter)
         result_report, exception_report = get_reports()
         if exception_report:
             report_fetched = True
