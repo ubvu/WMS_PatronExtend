@@ -59,22 +59,18 @@ class PatronReportParser():
         lol = list(csv.reader(open(file, 'rt', encoding='utf8'), delimiter='|'))
         if lol[0] != self.header.split('|'):
             return False
-        header = True
-        for line in lol:
-            if header:
-                header = False
-            else:
-                patron = Patron()
-                patron.expiration_date = datetime.strptime(line[lol[0].index('Patron_Expiration_Date')],
-                                                           PATRON_REPORT_DATE_FORMAT)
-                patron.given_name = line[lol[0].index('Patron_Given_Name')]
-                patron.family_name = line[lol[0].index('Patron_Family_Name')]
-                patron.barcode = line[lol[0].index('Patron_Barcode')]
-                patron.category = line[lol[0].index('Patron_Borrower_Category')]
-                patron.branch = line[lol[0].index('Patron_Home_Branch_ID')]
-                patron.last_activity = datetime.strptime(line[lol[0].index('Patron_Last_Activity_Date')],
-                                                         PATRON_REPORT_DATE_FORMAT)
-                self.patron_list.append(patron)
+        for line in lol[1:]:
+            patron = Patron()
+            patron.expiration_date = datetime.strptime(line[lol[0].index('Patron_Expiration_Date')],
+                                                       PATRON_REPORT_DATE_FORMAT)
+            patron.given_name = line[lol[0].index('Patron_Given_Name')]
+            patron.family_name = line[lol[0].index('Patron_Family_Name')]
+            patron.barcode = line[lol[0].index('Patron_Barcode')]
+            patron.category = line[lol[0].index('Patron_Borrower_Category')]
+            patron.branch = line[lol[0].index('Patron_Home_Branch_ID')]
+            patron.last_activity = datetime.strptime(line[lol[0].index('Patron_Last_Activity_Date')],
+                                                     PATRON_REPORT_DATE_FORMAT)
+            self.patron_list.append(patron)
         return True
 
 

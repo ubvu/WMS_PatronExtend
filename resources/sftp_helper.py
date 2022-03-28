@@ -31,7 +31,7 @@ class SftpDocklands():
         self.connection.close()
 
     def _connect(self):
-        logger.info('open connection to %s' % (self.host))
+        logger.debug('open connection to %s' % (self.host))
         self.connection = pysftp.Connection(self.host, username=self.user, password=self.password, cnopts=self.cnopts)
 
     def _download(self, path, filename, local_path):
