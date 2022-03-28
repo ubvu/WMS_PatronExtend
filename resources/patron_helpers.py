@@ -52,7 +52,7 @@ class Patron():
 class PatronReportParser():
     def __init__(self):
         self.patron_list = []
-        self.header = 'Inst_Symbol|Patron_Given_Name|Patron_Family_Name|Patron_Gender|Patron_Date_of_Birth|Patron_Barcode|Patron_Borrower_Category|Patron_Home_Branch_ID|Patron_Street_Address1|Patron_Street_Address2|Patron_City_or_Locality|Patron_State_or_Province|Patron_Postal_Code|Patron_Phone_Number|Patron_Email_Address|Patron_Verified_Flag|Patron_Total_Fines|Patron_Created_Date|Patron_Source_System|Patron_Expiration_Date|Patron_User_ID_At_Source|Patron_Blocked_Flag|Patron_Username|Patron_Last_Activity_Date|Patron_Last_Modified_Date|Patron_Custom_Category_1|Patron_Custom_Category_2|Patron_Custom_Category_3|Patron_Custom_Category_4|Patron_Country|Patron_Public_Notes|Patron_Staff_Notes'
+        self.header = 'Inst_Symbol|Patron_Given_Name|Patron_Family_Name|Patron_Gender|Patron_Date_of_Birth|Patron_Barcode|Patron_Borrower_Category|Patron_Home_Branch_ID|Patron_Street_Address1|Patron_Street_Address2|Patron_City_or_Locality|Patron_State_or_Province|Patron_Postal_Code|Patron_Phone_Number|Patron_Email_Address|Patron_Verified_Flag|Patron_Total_Fines|Patron_Created_Date|Patron_Source_System|Patron_Expiration_Date|Patron_User_ID_At_Source|Patron_Blocked_Flag|Patron_Username|Patron_Last_Activity_Date|Patron_Last_Modified_Date|Patron_Custom_Category_1|Patron_Custom_Category_2|Patron_Custom_Category_3|Patron_Custom_Category_4|Patron_Country|Patron_Public_Notes|Patron_Staff_Notes|User_Account_Roles'
 
     def parse_report(self, report):
         file = '%s%s' % (PATRON_REPORT_LPATH, report)
