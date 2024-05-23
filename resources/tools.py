@@ -33,7 +33,7 @@ def send_mail(logfile, subject, attachments=[]):
         message.attach(part)
 
     try:
-        s = smtplib.SMTP(SMTP_HOST)
+        s = smtplib.SMTP(SMTP_HOST, source_address=("130.37.194.20", 0))
         s.send_message(message)
         s.quit()
         logger.info("successfully sent email")

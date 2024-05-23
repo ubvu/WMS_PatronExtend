@@ -8,3 +8,4 @@ resources/config.py
 /data/lastpatronreport
 /data/run1
 /data/run2
+*.pyc
