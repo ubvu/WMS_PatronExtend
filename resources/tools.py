@@ -17,7 +17,8 @@ def send_mail(logfile, subject, attachments=[]):
     message = MIMEMultipart()
     with open(logfile) as fp:
         # Create a text/plain message
-        message.attach(MIMEText(fp.read()))
+        text = fp.read().replace("@", "[at]")
+        message.attach(MIMEText(text))
     message['From'] = MAIL_FROM
     message['To'] = MAIL_TO
     message['Bcc'] = MAIL_BCC
